@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pour Heureuse </title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Courier+Prime&family=Playfair+Display:wght@400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier Prime', monospace;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Subtle background pattern */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.03) 2px,
+                    rgba(255, 255, 255, 0.03) 4px
+                );
+            pointer-events: none;
+        }
+        
+        /* Main Container */
+        .letter-container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 4rem 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Header */
+        .letter-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeIn 2s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .letter-header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: #ff6b9d;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+        }
+        
+        .letter-date {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+        }
+        
+        /* Photo Section */
+        .photo-section {
+            text-align: center;
+            margin: 3rem 0;
+            opacity: 0;
+        }
+        
+        .photo-section.visible {
+            animation: photoFadeIn 3s ease forwards;
+        }
+        
+        @keyframes photoFadeIn {
+            to { opacity: 1; }
+        }
+        
+        .photo-frame {
+            display: inline-block;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.2), rgba(217, 70, 166, 0.2));
+            border-radius: 15px;
+            box-shadow: 
+                0 10px 40px rgba(255, 107, 157, 0.3),
+                inset 0 0 20px rgba(255, 107, 157, 0.1);
+        }
+        
+        .photo-placeholder {
+            width: 100%;
+            max-width: 350px;
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, #2d2d2d 0%, #3d3d3d 100%);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .photo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        
+        .photo-caption {
+            margin-top: 1.5rem;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #ff6b9d;
+        }
+        
+        /* Letter Content */
+        .letter-content {
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            line-height: 2;
+            color: #f5f5f5;
+            margin: 3rem 0;
+            min-height: 400px;
+        }
+        
+        .letter-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Typewriter cursor */
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background-color: #ff6b9d;
+            margin-left: 2px;
+            animation: blink 0.7s infinite;
+            vertical-align: text-bottom;
+        }
+        
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+        
+        /* Signature */
+        .signature {
+            text-align: right;
+            margin-top: 3rem;
+            opacity: 0;
+        }
+        
+        .signature.visible {
+            animation: fadeIn 2s ease forwards;
+        }
+        
+        .signature p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem;
+        }
+        
+        .signature .name {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #ff6b9d;
+        }
+        
+        /* Music Control */
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 107, 157, 0.2);
+            border: 2px solid rgba(255, 107, 157, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+            opacity: 0;
+            animation: fadeIn 3s ease forwards;
+        }
+        
+        .music-control:hover {
+            background: rgba(255, 107, 157, 0.3);
+            transform: scale(1.1);
+        }
+        
+        .music-control.playing {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 157, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(255, 107, 157, 0); }
+        }
+        
+        .music-icon {
+            font-size: 1.5rem;
+        }
+        
+        /* Floating hearts */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0;
+            animation: floatUp 8s infinite ease-in;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(0deg);
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) rotate(180deg);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .letter-container {
+                padding: 3rem 2rem;
+            }
+            
+            .letter-content {
+                font-size: 1.1rem;
+            }
+            
+            .photo-placeholder {
+                max-width: 280px;
+            }
+            
+            .music-control {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .music-icon {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .letter-container {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Hearts Background -->
+    <div class="floating-hearts" id="floatingHearts"></div>
+    
+    <!-- Main Letter Container -->
+    <div class="letter-container">
+        <!-- Header -->
+        <div class="letter-header">
+            <h1>Pour Heureuse</h1>
+         
+        </div>
+        
+        <!-- Photo Section -->
+        <div class="photo-section" id="photoSection">
+            <div class="photo-frame">
+                <div class="photo-placeholder">
+                    <img src="origine/IMG-20250801-WA0016.jpg" alt="Heureuse"> 
+                    
+                    
+                </div>
+            </div>
+            <p class="photo-caption">Mon Amour</p>
+        </div>
+        
+        <!-- Letter Content with Typewriter Effect -->
+        <div class="letter-content" id="letterContent">
+            <span id="typedText"></span><span class="cursor" id="cursor"></span>
+        </div>
+        
+        <!-- Signature -->
+        <div class="signature" id="signature">
+            <p>Avec tout mon amour,</p>
+            <p class="name">Christian</p>
+        </div>
+    </div>
+    
+    <!-- Music Control (Optional) -->
+    <div class="music-control" id="musicControl" title="Cliquez pour activer/désactiver la musique">
+        <span class="music-icon">🎵</span>
+    </div>
+    
+    <script>
+        // The love letter text
+        const letterText = `Ma chère Heureuse,
+
+ Je prends ma plume virtuelle ce soir pour te dire ce que mon cœur déborde de te confier depuis si longtemps.
+
+ Tu es la lumière qui illumine mes journées les plus sombres. Ton sourire est le rayon de soleil qui réchauffe mon âme, même dans les moments les plus difficiles.
+
+ Chaque instant passé à tes côtés est un trésor précieux que je chéris profondément. Tu n'es pas simplement une personne dans ma vie - tu es ma vie elle-même.
+
+ Avec toi, j'ai découvert ce que signifie vraiment aimer. Tu m'as appris que l'amour n'est pas seulement un sentiment passager, mais une promesse que je te fais chaque jour : celle de t'aimer inconditionnellement, de te respecter, de te soutenir, et de te chérir.
+
+Quand je pense à l'avenir, je te vois à mes côtés. Je vois tous nos rêves se réaliser, toutes nos aventures à venir, tous les souvenirs magnifiques que nous allons créer ensemble.
+
+ Tu es unique, extraordinaire, irremplaçable. Ta gentillesse, ton intelligence, ta beauté intérieure et extérieure - tout en toi me fascine et m'émerveille chaque jour un peu plus.
+
+ Je te promets de t'aimer aujourd'hui, demain, et pour l'éternité.
+
+Je t'aime, Heureuse. Plus que les mots ne pourront jamais l'exprimer.`;
+        
+        // Typewriter effect
+        let i = 0;
+        const speed = 100; // Vitesse de frappe en millisecondes
+        const typedTextElement = document.getElementById('typedText');
+        const cursorElement = document.getElementById('cursor');
+        
+        function typeWriter() {
+            if (i < letterText.length) {
+                const char = letterText.charAt(i);
+                
+                // Add line breaks
+                if (char === '\n') {
+                    typedTextElement.innerHTML += '<br>';
+                } else {
+                    typedTextElement.textContent += char;
+                }
+                
+                i++;
+                setTimeout(typeWriter, speed);
+            } else {
+                // Hide cursor when finished
+                setTimeout(() => {
+                    cursorElement.style.display = 'none';
+                    // Show signature
+                    document.getElementById('signature').classList.add('visible');
+                }, 500);
+            }
+        }
+        
+        // Show photo after 2 seconds
+        setTimeout(() => {
+            document.getElementById('photoSection').classList.add('visible');
+        }, 2000);
+        
+        // Start typing after 4 seconds
+        setTimeout(() => {
+            typeWriter();
+        }, 4000);
+        
+        // Floating hearts
+        function createHeart() {
+            const heartsContainer = document.getElementById('floatingHearts');
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = 'Heureuse DOSSOU❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.animationDuration = (Math.random() * 4 + 6) + 's';
+            heartsContainer.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 12000);
+        }
+        
+        // Create hearts periodically (subtle - every 3 seconds)
+        setInterval(createHeart, 3000);
+        
+        // Initial hearts
+        for (let i = 0; i < 5; i++) {
+            setTimeout(createHeart, i * 1000);
+        }
+        
+        // Music control (optional - you can add an audio file)
+        const musicControl = document.getElementById('musicControl');
+        let isPlaying = false;
+        
+        // Uncomment and modify this if you want to add background music
+         const audio = new Audio('origine/Ton Prénom (4).mp3');
+         audio.loop = true;
+        
+        musicControl.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                musicControl.classList.remove('playing');
+                musicControl.querySelector('.music-icon').textContent = '🎵';
+                isPlaying = false;
+            } else {
+                audio.play();
+                musicControl.classList.add('playing');
+                musicControl.querySelector('.music-icon').textContent = '🎶';
+                isPlaying = true;
+            }
+        });
+    </script>
+</body>
+</html>
